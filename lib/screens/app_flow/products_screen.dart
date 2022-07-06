@@ -65,7 +65,9 @@ class _Scaffold extends StatelessWidget {
           IconButton(
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CartScreen()));
+                      MaterialPageRoute(builder: (context) => CartScreen()))
+                  .then((value) =>
+                      context.read<AppBloc>().add(LoadProductsListEvent()));
             },
             icon: const Icon(Icons.shopping_cart),
           )
@@ -78,6 +80,7 @@ class _Scaffold extends StatelessWidget {
         return false;
       }, builder: (context, state) {
         if (state is ProductsListLoaded) {
+          // print(state.cartCountList);
           return ListView.builder(
               itemCount: state.productList.length,
               itemBuilder: (context, index) {
@@ -101,11 +104,19 @@ class _Scaffold extends StatelessWidget {
                         IconButton(
                             onPressed: () {
                               if (state.cartCountList[index] > 0) {
-                                context.read<AppBloc>().add(AddToCartEvent(
-                                    isHome: true,
-                                    productId: state.productList[index].id,
-                                    productCount:
-                                        state.cartCountList[index] - 1));
+                                if (state.cartCountList[index] == 1) {
+                                  context.read<AppBloc>().add(
+                                      RemoveFromCartEvent(
+                                          productId:
+                                              state.productList[index].id,
+                                          isHome: true));
+                                } else {
+                                  context.read<AppBloc>().add(AddToCartEvent(
+                                      isHome: true,
+                                      productId: state.productList[index].id,
+                                      productCount:
+                                          state.cartCountList[index] - 1));
+                                }
                               }
                             },
                             icon: const Text(
@@ -115,13 +126,15 @@ class _Scaffold extends StatelessWidget {
                         Text(state.cartCountList[index].toString()),
                         IconButton(
                             onPressed: () {
+                              print(state.productList[index].id);
+                              print(state.cartCountList[index]);
                               context.read<AppBloc>().add(AddToCartEvent(
                                   productId: state.productList[index].id,
                                   productCount: state.cartCountList[index] + 1,
                                   isHome: true));
                             },
-                            icon:
-                                const Text("+", style: TextStyle(fontSize: 26))),
+                            icon: const Text("+",
+                                style: TextStyle(fontSize: 26))),
                       ],
                     ),
                   ),

@@ -118,12 +118,18 @@ class _Scaffold extends StatelessWidget {
                         children: [
                           IconButton(
                               onPressed: () {
-                                if (state.cartCountList[index] > 1) {
-                                  context.read<AppBloc>().add(AddToCartEvent(
-                                      isHome: false,
-                                      productId: state.productList[index].id,
-                                      productCount:
-                                          state.cartCountList[index] - 1));
+                                if (state.cartCountList[index] > 0) {
+                                  if(state.cartCountList[index]==1){
+                                    context.read<AppBloc>().add(RemoveFromCartEvent(productId: state.productList[index].id));
+                                  }
+                                  else{
+                                    context.read<AppBloc>().add(AddToCartEvent(
+                                        isHome: false,
+                                        productId: state.productList[index].id,
+                                        productCount:
+                                        state.cartCountList[index] - 1));
+                                  }
+
                                 }
                               },
                               icon: const Text(

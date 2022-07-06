@@ -67,7 +67,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
     on<RemoveFromCartEvent>((event, emit) async {
       await repository.removeFromCart(productId: event.productId);
-      add(LoadProductsListEvent());
+      if(event.isHome){
+        add(LoadProductsListEvent());
+      }else{
+        add(LoadCartProducts());
+      }
     });
 
     on<LoadCartProducts>((event, emit) async {

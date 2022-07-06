@@ -63,7 +63,7 @@ class Repository {
     if (isAdded.isNotEmpty) {
       List<Product> list = [];
       for (int i = 0; i < isAdded.length; i++) {
-        list.add(Product.fromJson(isAdded[i], i));
+        list.add(Product.fromJson(isAdded[i], i+1));
       }
       return list;
     } else {
@@ -72,7 +72,7 @@ class Repository {
         List<Product> list = [];
         for (int i = 0; i < response.data["data"]["products"].length; i++) {
           final productModel =
-              Product.fromJson(response.data["data"]["products"][i], i);
+              Product.fromJson(response.data["data"]["products"][i], i+1);
           list.add(productModel);
           await productsDatabase.rawInsert(
               'INSERT INTO products (prodImage,prodCode,prodName,UOM,unit_id,prodShortName,prodPrice,prodMrp) VALUES (?,?,?,?,?,?,?,?)',

@@ -30,8 +30,9 @@ class AddToCartEvent extends AppEvent{
 }
 
 class RemoveFromCartEvent extends AppEvent{
+  final bool isHome;
   final int productId;
-  RemoveFromCartEvent({required this.productId});
+  RemoveFromCartEvent({required this.productId,this.isHome=false});
 }
 
 class LoadCartProducts extends AppEvent{}
