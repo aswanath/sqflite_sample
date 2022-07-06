@@ -18,6 +18,8 @@ class CheckOutEvent extends AppEvent{}
 
 class StayHereEvent extends AppEvent{}
 
+class LogInEvent extends AppEvent{}
+
 class LogOutEvent extends AppEvent{}
 
 class AddToCartEvent extends AppEvent{

@@ -83,8 +83,32 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       emit(StayHereState());
     });
 
-   on<LogOutEvent>((event, emit){
-
+   on<LogInEvent>((event, emit)async{
+     final retailers = await repository.getAllRetailers();
+     if(retailers.isEmpty) {
+       final sample1 = RetailerModel(
+           id: 1,
+           state: "Rajasthan",
+           image: 'assets/avatars/four.png',
+           number: 9567387758,
+           address: "Eratat",
+           city: "Palakkad",
+           ownerName: "Raja",
+           shopName: "Birla");
+       final sample2 = RetailerModel(
+           id: 1,
+           state: "Rajasthan",
+           image: 'assets/avatars/three.png',
+           number: 9567387758,
+           address: "Eratat",
+           city: "Noida",
+           ownerName: "Ambani",
+           shopName: "Reliance");
+       await repository.addRetailer(sample1);
+       await repository.addRetailer(sample2);
+     }
+     await sharedPreferences.setBool('isLoggedIn', true);
+     emit(LogInSuccess());
    });
   }
 }

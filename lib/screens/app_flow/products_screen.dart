@@ -94,29 +94,35 @@ class _Scaffold extends StatelessWidget {
                   subtitle:
                       Text('\u{20B9} ${state.productList[index].prodPrice}'),
                   trailing: SizedBox(
-                    width: 80,
-                    child: Center(
-                      child: ElevatedButton(
-                          onPressed: () {
-                            if (state.cartCountList[index] == 0) {
+                    width: 110,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              if (state.cartCountList[index] > 0) {
+                                context.read<AppBloc>().add(AddToCartEvent(
+                                    isHome: true,
+                                    productId: state.productList[index].id,
+                                    productCount:
+                                        state.cartCountList[index] - 1));
+                              }
+                            },
+                            icon: const Text(
+                              "-",
+                              style: TextStyle(fontSize: 26),
+                            )),
+                        Text(state.cartCountList[index].toString()),
+                        IconButton(
+                            onPressed: () {
                               context.read<AppBloc>().add(AddToCartEvent(
                                   productId: state.productList[index].id,
-                                  productCount: 1,
+                                  productCount: state.cartCountList[index] + 1,
                                   isHome: true));
-                            } else {
-                              context.read<AppBloc>().add(RemoveFromCartEvent(
-                                  productId: state.productList[index].id));
-                            }
-                          },
-                          style: ButtonStyle(
-                              padding: MaterialStateProperty.all(
-                                  const EdgeInsets.symmetric(horizontal: 10))),
-                          child: Text(
-                            state.cartCountList[index] == 0
-                                ? "Add to cart"
-                                : "Remove from cart",
-                            style: const TextStyle(fontSize: 12),
-                          )),
+                            },
+                            icon:
+                                const Text("+", style: TextStyle(fontSize: 26))),
+                      ],
                     ),
                   ),
                 );
@@ -130,3 +136,30 @@ class _Scaffold extends StatelessWidget {
     );
   }
 }
+
+// SizedBox(
+// width: 80,
+// child: Center(
+// child: ElevatedButton(
+// onPressed: () {
+// if (state.cartCountList[index] == 0) {
+// context.read<AppBloc>().add(AddToCartEvent(
+// productId: state.productList[index].id,
+// productCount: 1,
+// isHome: true));
+// } else {
+// context.read<AppBloc>().add(RemoveFromCartEvent(
+// productId: state.productList[index].id));
+// }
+// },
+// style: ButtonStyle(
+// padding: MaterialStateProperty.all(
+// const EdgeInsets.symmetric(horizontal: 10))),
+// child: Text(
+// state.cartCountList[index] == 0
+// ? "Add to cart"
+//     : "Remove from cart",
+// style: const TextStyle(fontSize: 12),
+// )),
+// ),
+// )

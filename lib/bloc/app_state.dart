@@ -27,3 +27,5 @@ class CartProductsLoaded extends AppState{
 class CheckOutSuccess extends AppState{}
 
 class StayHereState extends AppState{}
+
+class LogInSuccess extends AppState{}

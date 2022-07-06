@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:now_apps_task/bloc/app_bloc.dart';
 import 'package:now_apps_task/main.dart';
 import 'package:now_apps_task/screens/app_flow/home_page.dart';
 import 'package:now_apps_task/utils/repository.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OTPScreen extends StatelessWidget {
   const OTPScreen({Key? key}) : super(key: key);
@@ -12,7 +14,13 @@ class OTPScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child: BlocListener<AppBloc, AppState>(
+  listener: (context, state) {
+    if(state is LogInSuccess){
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const HomeScreen()), (route) => false);
+    }
+  },
+  child: Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -32,14 +40,14 @@ class OTPScreen extends StatelessWidget {
                 textFieldAlignment: MainAxisAlignment.spaceAround,
                 fieldStyle: FieldStyle.underline,
                 onCompleted: (pin) {
-                  sharedPreferences.setBool('isLoggedIn', true);
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                  context.read<AppBloc>().add(LogInEvent());
                 },
               ),
             ],
           ),
         ),
       ),
+),
     );
   }
 }
